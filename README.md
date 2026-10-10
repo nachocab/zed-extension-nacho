@@ -92,4 +92,4 @@ npm test   # regenerates src/parser.c and runs test/corpus and test/highlight
 
 The highlight tests read `languages/nacho/highlights.scm`, the same file Zed uses.
 
-Zed fetches the grammar by commit, so once the grammar change is committed, point `rev` in `extension.toml` at that commit and reinstall the dev extension. While the repository is local, `[grammars.nacho].repository` is a `file://` URL; switch it to the GitHub URL before publishing.
+Zed fetches the grammar from GitHub by commit, so push the grammar change, point `rev` in `extension.toml` at that commit, and reinstall the dev extension.

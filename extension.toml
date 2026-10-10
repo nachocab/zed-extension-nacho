@@ -10,6 +10,6 @@ repository = "https://github.com/nachocab/zed-extension-nacho"
 # `repository`, so `rev` has to be a commit that contains the grammar, and it
 # needs bumping whenever `tree-sitter-nacho/` changes.
 [grammars.nacho]
-repository = "file:///Users/kpct572/Documents/Code/other_code/zed-extension-nacho"
-rev = "51b97a39af1140544980fed0fbbeb2e488b700de"
+repository = "https://github.com/nachocab/zed-extension-nacho"
+rev = "290c9b24bde829994b5c8351c3fa80c28ff72d39"
 path = "tree-sitter-nacho"
