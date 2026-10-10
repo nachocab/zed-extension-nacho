@@ -18,7 +18,9 @@ const sections = ($, level) =>
 // openers of every highlighted construct are left out so they start a token of
 // their own.
 const TEXT_SEPARATOR = String.raw`[ \t,;:()?¿¡'’\[\]{}.@~$»”…\\]`;
-const WORD = String.raw`[\p{L}_][\p{L}\p{N}_]*`;
+// A word keeps any `.`-joined parts glued to it, so the `.5` in `x.5` or
+// `v1.2` reads as part of the word rather than as a number.
+const WORD = String.raw`[\p{L}_][\p{L}\p{N}_]*(\.[\p{L}\p{N}_]+)*`;
 
 module.exports = grammar({
   name: "nacho",
