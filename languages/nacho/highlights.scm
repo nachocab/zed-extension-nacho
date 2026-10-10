@@ -13,6 +13,8 @@
 
 (blockquote) @keyword.blockquote
 
+(list_marker) @punctuation.list_marker
+
 [
   (comment)
   (html_comment)

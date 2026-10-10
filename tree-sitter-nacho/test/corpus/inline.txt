@@ -134,7 +134,8 @@ Numbers need a word boundary
   (number)
   (number)
   (number)
-  (number)
+  (group
+    (number))
   (number))
 
 ==================
@@ -165,3 +166,94 @@ Operators match their longest form
   (operator)
   (operator)
   (operator))
+
+==================
+Bullets start a line
+==================
+
+- dash
+  * star
++ plus • and - not at the start
+-- a comment, not a bullet
+*emphasis*, not a bullet
+
+---
+
+(source_file
+  (list_marker)
+  (list_marker)
+  (list_marker)
+  (operator)
+  (comment
+    (comment_marker))
+  (emphasis
+    (highlight_content)))
+
+==================
+Bracket pairs nest and close on their own line
+==================
+
+(a [b] {c}) (stray ] and [ (open
+)
+
+---
+
+(source_file
+  (group
+    (group)
+    (group)))
+
+==================
+Spans the grammar skips hide a closer
+==================
+
+(a `)` b) (c "d)" e) (f *g)* h) (i <!-- ) --> j)
+
+---
+
+(source_file
+  (group
+    (code
+      (highlight_content)))
+  (group
+    (string))
+  (group
+    (emphasis
+      (highlight_content)))
+  (group
+    (html_comment)))
+
+==================
+A comment marker ends the search for a closer
+==================
+
+(see # note)
+
+---
+
+(source_file
+  (comment
+    (comment_marker)))
+
+==================
+Brackets pair inside comments and headings
+==================
+
+# a (b `c)` [d]) e (f
+## Heading (with [brackets]) (open
+
+---
+
+(source_file
+  (comment
+    (comment_marker)
+    (group
+      (comment_highlight
+        (highlight_content))
+      (group)))
+  (section
+    (heading_2
+      marker: (heading_marker)
+      content: (heading_content
+        (group
+          (group))))))

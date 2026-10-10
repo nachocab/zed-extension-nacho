@@ -34,6 +34,10 @@
         {
           "type": "comment_marker",
           "named": true
+        },
+        {
+          "type": "group",
+          "named": true
         }
       ]
     }
@@ -63,6 +67,49 @@
       "types": [
         {
           "type": "highlight_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "group",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "code",
+          "named": true
+        },
+        {
+          "type": "comment_highlight",
+          "named": true
+        },
+        {
+          "type": "emphasis",
+          "named": true
+        },
+        {
+          "type": "group",
+          "named": true
+        },
+        {
+          "type": "html_comment",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         }
       ]
@@ -251,6 +298,21 @@
     }
   },
   {
+    "type": "heading_content",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "group",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "heading_marker",
     "named": true,
     "fields": {}
@@ -277,6 +339,10 @@
         },
         {
           "type": "emphasis",
+          "named": true
+        },
+        {
+          "type": "group",
           "named": true
         },
         {
@@ -309,6 +375,10 @@
         },
         {
           "type": "html_comment",
+          "named": true
+        },
+        {
+          "type": "list_marker",
           "named": true
         },
         {
@@ -356,7 +426,15 @@
           "named": true
         },
         {
+          "type": "group",
+          "named": true
+        },
+        {
           "type": "html_comment",
+          "named": true
+        },
+        {
+          "type": "list_marker",
           "named": true
         },
         {
@@ -422,7 +500,23 @@
     "named": false
   },
   {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
     "type": "*",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
     "named": false
   },
   {
@@ -438,15 +532,15 @@
     "named": true
   },
   {
-    "type": "heading_content",
-    "named": true
-  },
-  {
     "type": "highlight_content",
     "named": true
   },
   {
     "type": "html_comment",
+    "named": true
+  },
+  {
+    "type": "list_marker",
     "named": true
   },
   {
@@ -456,6 +550,14 @@
   {
     "type": "operator",
     "named": true
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
   },
   {
     "type": "«",

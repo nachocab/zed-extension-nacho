@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-nacho",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tree-sitter grammar for Nacho, a Markdown variation for note-taking",
   "license": "MIT",
   "private": true,

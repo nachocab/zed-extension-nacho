@@ -31,3 +31,6 @@ text *emph* and `code` 42 <- "str \n" «g»
 #                           ^ number.highlight
 <!-- html -->
 # <- comment
+  - bullet with a-hyphen
+# ^ punctuation.list_marker
+#                ^ operator

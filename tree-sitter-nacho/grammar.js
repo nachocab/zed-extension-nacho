@@ -17,10 +17,19 @@ const sections = ($, level) =>
 // a run of prose into one token keeps the tree small; digits, operators and the
 // openers of every highlighted construct are left out so they start a token of
 // their own.
-const TEXT_SEPARATOR = String.raw`[ \t,;:()?¿¡'’\[\]{}.@~$»”…\\]`;
+const TEXT_SEPARATOR = String.raw`[ \t,;:?¿¡'’.@~$»”…\\]`;
 // A word keeps any `.`-joined parts glued to it, so the `.5` in `x.5` or
 // `v1.2` reads as part of the word rather than as a number.
 const WORD = String.raw`[\p{L}_][\p{L}\p{N}_]*(\.[\p{L}\p{N}_]+)*`;
+
+// A bracket pair holding `content`, one choice per bracket type. The scanner
+// only opens one whose partner is on the same line.
+const brackets = ($, content) =>
+  choice(
+    seq(alias($._paren_open, "("), repeat(content), ")"),
+    seq(alias($._square_open, "["), repeat(content), "]"),
+    seq(alias($._brace_open, "{"), repeat(content), "}"),
+  );
 
 module.exports = grammar({
   name: "nacho",
@@ -35,6 +44,9 @@ module.exports = grammar({
     $._string_open,
     $._curly_string_open,
     $._guillemet_string_open,
+    $._paren_open,
+    $._square_open,
+    $._brace_open,
     $._error_sentinel,
   ],
 
@@ -68,7 +80,9 @@ module.exports = grammar({
     ...Object.fromEntries(
       LEVELS.map((n) => [`_heading_marker_${n}`, (_) => (n === 8 ? /#{8}#*/ : "#".repeat(n))]),
     ),
-    heading_content: (_) => /[^\s]([^\n]*[^\s])?/,
+    heading_content: ($) => repeat1(choice(alias($._heading_group, $.group), $._heading_text)),
+    _heading_group: ($) => brackets($, choice(alias($._heading_group, $.group), $._heading_text)),
+    _heading_text: ($) => choice(/[^\s()\[\]{}]([^\n()\[\]{}]*[^\s()\[\]{}])?/, $._stray_bracket),
 
     _block: ($) => choice($._line, $.blockquote, $._blank_line),
 
@@ -77,12 +91,18 @@ module.exports = grammar({
     // Lines starting with `>` take the whole line, with nothing highlighted inside.
     blockquote: ($) => seq(token(prec(1, />[^\n]*/)), $._eol),
 
+    _line: ($) =>
+      choice(seq($.list_marker, optional($._line_body), $._eol), seq($._line_body, $._eol)),
     // A line comment always runs to the end of its line.
-    _line: ($) => seq(choice(seq(repeat1($._inline), optional($.comment)), $.comment), $._eol),
+    _line_body: ($) => choice(seq(repeat1($._inline), optional($.comment)), $.comment),
+
+    // A bullet at the start of a line.
+    list_marker: (_) => /[-*+•][ \t]/,
 
     _inline: ($) =>
       choice(
         $.html_comment,
+        $.group,
         $.emphasis,
         $.code,
         $.string,
@@ -96,8 +116,10 @@ module.exports = grammar({
     comment: ($) =>
       seq(
         alias(/(#|\/\/|--) /, $.comment_marker),
-        repeat(choice($.comment_highlight, $._comment_text)),
+        repeat(choice($.comment_highlight, alias($._comment_group, $.group), $._comment_text)),
       ),
+    _comment_group: ($) =>
+      brackets($, choice($.comment_highlight, alias($._comment_group, $.group), $._comment_text)),
     comment_highlight: ($) =>
       choice(
         seq(alias($._emphasis_open, "*"), $.highlight_content, "*"),
@@ -105,7 +127,12 @@ module.exports = grammar({
         seq(alias($._quote_open, '"'), alias($._quote_content, $.highlight_content), '"'),
       ),
     // A delimiter with no partner on the line is plain comment text.
-    _comment_text: (_) => choice(/[^*`"\n]+/, "*", "`", '"'),
+    _comment_text: ($) => choice(/[^*`"()\[\]{}\n]+/, "*", "`", '"', $._stray_bracket),
+
+    group: ($) => brackets($, $._inline),
+    // A bracket with no partner on the line. Inside a pair, the pair's own
+    // closer outranks it.
+    _stray_bracket: (_) => token(prec(-1, /[()\[\]{}]/)),
 
     // The scanner only opens `emphasis` and `code` (and `comment_highlight`)
     // when the closing delimiter is on the same line, and never before a space.
