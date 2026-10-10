@@ -1,6 +1,6 @@
 id = "nacho"
 name = "Nacho"
-version = "0.1.0"
+version = "0.2.0"
 schema_version = 1
 authors = ["Nacho Caballero"]
 description = "Variation of the R markdown language, which allows you to have indented subheadings and highlights within comments"
@@ -11,5 +11,5 @@ repository = "https://github.com/nachocab/zed-extension-nacho"
 # needs bumping whenever `tree-sitter-nacho/` changes.
 [grammars.nacho]
 repository = "https://github.com/nachocab/zed-extension-nacho"
-rev = "290c9b24bde829994b5c8351c3fa80c28ff72d39"
+rev = "32dec4f70927e133ab176831362fbe1609925f0f"
 path = "tree-sitter-nacho"

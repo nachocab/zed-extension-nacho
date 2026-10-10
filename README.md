@@ -1,6 +1,6 @@
 # Nacho for Zed
 
-Nacho is a lightweight variation of Markdown designed for note-taking. This extension brings the [VS Code extension](https://github.com/nachocab/vscode-nacho-language)'s highlighting, outline, and folding to [Zed](https://zed.dev).
+Nacho is a lightweight variation of Markdown designed for note-taking. This extension brings the [VS Code extension](https://github.com/nachocab/vscode-nacho-language)'s highlighting, outline, and folding to [Zed](https://zed.dev), along with Nacho2, a port of the VS Code color theme.
 
 ## Syntax
 
@@ -9,11 +9,13 @@ Nacho is a lightweight variation of Markdown designed for note-taking. This exte
 - **Emphasis** anywhere else: `*text*` and `` `text` ``.
 - **Strings**: `"…"`, `“…”` and `«…»`, with `\` escapes.
 - **Blockquotes**: lines starting with `>`.
+- **Bullets**: `- `, `* `, `+ ` or `• ` at the start of a line.
+- **Brackets**: `()`, `[]` and `{}` pair up within a line, in the body, in comments and in headings, for rainbow brackets and bracket matching. A bracket with no partner on its line stays plain text.
 - **Numbers**, R-style **operators** (`<-`, `%in%`, `&&`, …), and `<!-- … -->` comments.
 
 ## Navigation
 
-- **Outline**: `cmd-shift-o` lists every heading, nested by level. The outline panel shows the same tree.
+- **Outline**: `cmd-shift-o` lists every heading by its text, nested by level. The outline panel and breadcrumbs show the same tree.
 - **Sticky scroll**: with `"sticky_scroll": { "enabled": true }`, the headings above the viewport stay pinned at the top.
 - **Folding**: any line with an indented block under it folds, the same way it does in VS Code.
 
@@ -30,6 +32,13 @@ To make `.txt` files open as Nacho, add this to your Zed `settings.json`. The bu
 "file_types": {
   "Nacho": ["txt"]
 }
+```
+
+To use the theme and rainbow brackets:
+
+```json
+"theme": { "mode": "system", "light": "One Light", "dark": "Nacho2" },
+"colorize_brackets": true
 ```
 
 Settings that mirror the VS Code `[nacho]` block, plus `cmd-r` for the outline, go in `settings.json` and `keymap.json`:
@@ -55,7 +64,7 @@ Settings that mirror the VS Code `[nacho]` block, plus `cmd-r` for the outline, 
 
 ## Colors
 
-Captures are chosen so the default One Dark theme reproduces the VS Code colors. Each capture has a theme color as its first segment and the element after it, so you can restyle one element on its own:
+The Nacho2 theme reproduces the VS Code extension's colors under the VS Code Nacho2 theme, with VS Code's gold, orchid and blue for rainbow brackets. Under other themes, captures fall back to a theme color: each has that color as its first segment and the element after it, so a theme override can restyle one element on its own:
 
 | Element | Capture |
 | --- | --- |
@@ -63,13 +72,14 @@ Captures are chosen so the default One Dark theme reproduces the VS Code colors.
 | Blockquote | `keyword.blockquote` |
 | Highlight inside a comment | `number.highlight` |
 | Emphasis and code elsewhere | `variable.parameter.highlight` |
+| Bullet | `punctuation.list_marker` |
 
-For example, to make h8 headings violet:
+For example, to make bullets orange:
 
 ```json
 "theme_overrides": {
-  "One Dark": {
-    "syntax": { "type.h8": { "color": "#b864eb" } }
+  "Nacho2": {
+    "syntax": { "punctuation.list_marker": { "color": "#d19a66" } }
   }
 }
 ```
@@ -77,7 +87,7 @@ For example, to make h8 headings violet:
 ## Differences from the VS Code extension
 
 - A heading folds only as far as its indentation reaches. Zed has no folding provider for extensions without a language server, so a heading no longer folds away subheadings written at its own indent.
-- Strings, emphasis and comment highlights all close on the line they open on. An unmatched `"` doesn't color the rest of the file.
+- Strings, emphasis, comment highlights and bracket pairs all close on the line they open on. An unmatched `"` doesn't color the rest of the file.
 - `##text` with no space after the hashes is a heading, just as it already was in the VS Code outline.
 
 ## Development
@@ -93,3 +103,7 @@ npm test   # regenerates src/parser.c and runs test/corpus and test/highlight
 The highlight tests read `languages/nacho/highlights.scm`, the same file Zed uses.
 
 Zed fetches the grammar from GitHub by commit, so push the grammar change, point `rev` in `extension.toml` at that commit, and reinstall the dev extension.
+
+## Credits
+
+The Nacho2 theme builds on Zed's port of Atom's One Dark; see [`themes/LICENSE-one-dark.md`](themes/LICENSE-one-dark.md).
