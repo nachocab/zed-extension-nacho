@@ -1,0 +1,167 @@
+==================
+Comments start with #, // or -- and a space, anywhere in a line
+==================
+
+# hash
+// slashes
+text -- dashes
+#no-space //no-space --no-space
+
+---
+
+(source_file
+  (comment
+    (comment_marker))
+  (comment
+    (comment_marker))
+  (comment
+    (comment_marker))
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator))
+
+==================
+Comment highlights
+==================
+
+# *one* `two` "three" * lone, and a closer may follow a space *a *
+
+---
+
+(source_file
+  (comment
+    (comment_marker)
+    (comment_highlight
+      (highlight_content))
+    (comment_highlight
+      (highlight_content))
+    (comment_highlight
+      (highlight_content))
+    (comment_highlight
+      (highlight_content))))
+
+==================
+Emphasis and code in the body
+==================
+
+a *b c* and `d` but * not * and *unclosed
+
+---
+
+(source_file
+  (emphasis
+    (highlight_content))
+  (code
+    (highlight_content))
+  (operator)
+  (operator)
+  (operator))
+
+==================
+Emphasis takes precedence over a comment marker inside it
+==================
+
+*a # b*
+
+---
+
+(source_file
+  (emphasis
+    (highlight_content)))
+
+==================
+Strings close on their own line
+==================
+
+"plain \" escaped" “curly” «guillemet» ""
+"unclosed
+"
+
+---
+
+(source_file
+  (string
+    (escape_sequence))
+  (string)
+  (string)
+  (string))
+
+==================
+Blockquotes take the whole line
+==================
+
+  > quoted *not emphasis* 3
+>
+
+---
+
+(source_file
+  (blockquote)
+  (blockquote))
+
+==================
+HTML comments span lines, hide headings and close on --\s*>
+==================
+
+before <!-- one
+## not a heading
+--> after <!-- a -- > b
+<!-- - -> -- -> still open --->
+
+---
+
+(source_file
+  (html_comment)
+  (html_comment)
+  (html_comment))
+
+==================
+Numbers need a word boundary
+==================
+
+10 10L 1e5 0x1F 3.14 .5 (5 min) costs 5. 2nd 5px abc123
+
+---
+
+(source_file
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number))
+
+==================
+Operators match their longest form
+==================
+
+<- <<- -> ->> == != <> <= >= %/% %% %*% %in% %o% %x% && || ! well-known
+
+---
+
+(source_file
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (operator))

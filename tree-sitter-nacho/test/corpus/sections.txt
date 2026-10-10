@@ -1,0 +1,137 @@
+==================
+Headings nest under the nearest shallower heading
+==================
+
+## h2-1
+  ### h3-1
+    #### h4-1
+  ### h3-2
+    ##### h5-1
+# comment
+## h2-2
+  ##### h5-2
+  ### h3-3
+# comment
+
+---
+
+(source_file
+  (section
+    (heading_2
+      marker: (heading_marker)
+      content: (heading_content))
+    (section
+      (heading_3
+        marker: (heading_marker)
+        content: (heading_content))
+      (section
+        (heading_4
+          marker: (heading_marker)
+          content: (heading_content))))
+    (section
+      (heading_3
+        marker: (heading_marker)
+        content: (heading_content))
+      (section
+        (heading_5
+          marker: (heading_marker)
+          content: (heading_content))
+        (comment
+          (comment_marker)))))
+  (section
+    (heading_2
+      marker: (heading_marker)
+      content: (heading_content))
+    (section
+      (heading_5
+        marker: (heading_marker)
+        content: (heading_content)))
+    (section
+      (heading_3
+        marker: (heading_marker)
+        content: (heading_content))
+      (comment
+        (comment_marker)))))
+
+==================
+Text before the first heading stays outside any section
+==================
+
+intro
+### starts at h3
+## h2
+
+---
+
+(source_file
+  (section
+    (heading_3
+      marker: (heading_marker)
+      content: (heading_content)))
+  (section
+    (heading_2
+      marker: (heading_marker)
+      content: (heading_content))))
+
+==================
+Eight or more hashes are all level 8
+==================
+
+######## h8
+########### h8 too
+
+---
+
+(source_file
+  (section
+    (heading_8
+      marker: (heading_marker)
+      content: (heading_content)))
+  (section
+    (heading_8
+      marker: (heading_marker)
+      content: (heading_content))))
+
+==================
+A heading may have no text, or no space after the hashes
+==================
+
+###
+##text
+
+---
+
+(source_file
+  (section
+    (heading_3
+      marker: (heading_marker)))
+  (section
+    (heading_2
+      marker: (heading_marker)
+      content: (heading_content))))
+
+==================
+Hashes mid-line are not a heading
+==================
+
+text ## not a heading
+
+---
+
+(source_file
+  (comment
+    (comment_marker)))
+
+==================
+The last line needs no newline
+==================
+
+## h2
+  last line
+---
+
+(source_file
+  (section
+    (heading_2
+      marker: (heading_marker)
+      content: (heading_content))))

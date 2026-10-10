@@ -1,0 +1,4 @@
+# Zed clones and compiles the grammar here when it installs the extension.
+grammars/
+*.wasm
+node_modules/

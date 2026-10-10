@@ -1,0 +1,33 @@
+## Heading two
+# <- function.h2
+#  ^ function.h2
+  ### Heading three
+# ^ property.h3
+    #### four
+#   ^ number.h4
+##### five
+# <- string.h5
+###### six
+# <- keyword.h6
+####### seven
+# <- constant.h7
+######### eight
+# <- type.h8
+> quoted *text*
+# <- keyword.blockquote
+#        ^ keyword.blockquote
+text *emph* and `code` 42 <- "str \n" «g»
+#     ^ variable.parameter.highlight
+#                ^ variable.parameter.highlight
+#                      ^ number
+#                         ^ operator
+#                            ^ string
+#                                 ^ string.escape
+#                                       ^ string
+// comment with *bold* and "q"
+# <- comment
+#                ^ number.highlight
+#               ^ comment
+#                           ^ number.highlight
+<!-- html -->
+# <- comment

@@ -1,0 +1,14 @@
+{
+  "name": "tree-sitter-nacho",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for Nacho, a Markdown variation for note-taking",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter generate && tree-sitter test"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "0.27.0"
+  }
+}

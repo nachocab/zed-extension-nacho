@@ -1,0 +1,4 @@
+tree-sitter-nacho/src/grammar.json linguist-generated
+tree-sitter-nacho/src/node-types.json linguist-generated
+tree-sitter-nacho/src/parser.c linguist-generated
+tree-sitter-nacho/src/tree_sitter/** linguist-generated
