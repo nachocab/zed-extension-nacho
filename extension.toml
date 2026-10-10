@@ -1,0 +1,15 @@
+id = "nacho"
+name = "Nacho"
+version = "0.1.0"
+schema_version = 1
+authors = ["Nacho Caballero"]
+description = "Variation of the R markdown language, which allows you to have indented subheadings and highlights within comments"
+repository = "https://github.com/nachocab/zed-extension-nacho"
+
+# The grammar lives in this repository. Zed checks out `rev` from
+# `repository`, so `rev` has to be a commit that contains the grammar, and it
+# needs bumping whenever `tree-sitter-nacho/` changes.
+[grammars.nacho]
+repository = "file:///Users/kpct572/Documents/Code/other_code/zed-extension-nacho"
+rev = "51b97a39af1140544980fed0fbbeb2e488b700de"
+path = "tree-sitter-nacho"

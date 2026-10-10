@@ -1,0 +1,19 @@
+name = "Nacho"
+grammar = "nacho"
+path_suffixes = ["txt"]
+line_comments = ["# "]
+block_comment = { start = "<!--", prefix = "", end = "-->", tab_size = 1 }
+autoclose_before = ";:.,=}])>"
+brackets = [
+    { start = "{", end = "}", close = true, newline = true },
+    { start = "[", end = "]", close = true, newline = true },
+    { start = "(", end = ")", close = true, newline = true },
+    { start = "\"", end = "\"", close = true, newline = false },
+    { start = "«", end = "»", close = true, newline = false },
+    { start = "¿", end = "?", close = true, newline = false },
+    { start = "¡", end = "!", close = true, newline = false },
+    { start = "'", end = "'", close = false, newline = false },
+    { start = "*", end = "*", close = false, newline = false },
+    { start = "_", end = "_", close = false, newline = false },
+    { start = "@", end = "@", close = false, newline = false },
+]
