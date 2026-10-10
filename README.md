@@ -1,6 +1,6 @@
 # Nacho for Zed
 
-Nacho is a lightweight variation of Markdown designed for note-taking. This extension brings the [VS Code extension](https://github.com/nachocab/vscode-nacho-language)'s highlighting, outline, and folding to [Zed](https://zed.dev), along with Nacho2, a port of the VS Code color theme.
+Nacho is a lightweight variation of Markdown designed for note-taking. This extension brings the [VS Code extension](https://github.com/nachocab/vscode-nacho-language)'s highlighting, outline, and folding to [Zed](https://zed.dev). Nacho2, a port of the VS Code color theme, lives in [nachocab/dotfiles](https://github.com/nachocab/dotfiles/tree/main/zed/themes).
 
 ## Syntax
 
@@ -34,7 +34,7 @@ To make `.txt` files open as Nacho, add this to your Zed `settings.json`. The bu
 }
 ```
 
-To use the theme and rainbow brackets:
+To use the Nacho2 theme (copy [`nacho2.json`](https://github.com/nachocab/dotfiles/blob/main/zed/themes/nacho2.json) into `~/.config/zed/themes/`) and rainbow brackets:
 
 ```json
 "theme": { "mode": "system", "light": "One Light", "dark": "Nacho2" },
@@ -103,7 +103,3 @@ npm test   # regenerates src/parser.c and runs test/corpus and test/highlight
 The highlight tests read `languages/nacho/highlights.scm`, the same file Zed uses.
 
 Zed fetches the grammar from GitHub by commit, so push the grammar change, point `rev` in `extension.toml` at that commit, and reinstall the dev extension.
-
-## Credits
-
-The Nacho2 theme builds on Zed's port of Atom's One Dark; see [`themes/LICENSE-one-dark.md`](themes/LICENSE-one-dark.md).
