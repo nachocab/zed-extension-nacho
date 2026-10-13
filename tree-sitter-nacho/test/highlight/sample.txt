@@ -34,3 +34,9 @@ text *emph* and `code` 42 <- "str \n" «g»
   - bullet with a-hyphen
 # ^ punctuation.list_marker
 #                ^ operator
+see https://zed.dev/docs, (https://w.org/F_(b)) # at https://x.com.
+#   ^ link_uri
+#                      ^ link_uri
+#                                            ^ link_uri
+#                                                            ^ link_uri
+#                                                                 ^ comment

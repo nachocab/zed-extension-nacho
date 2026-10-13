@@ -11,6 +11,7 @@ Nacho is a lightweight variation of Markdown designed for note-taking. This exte
 - **Blockquotes**: lines starting with `>`.
 - **Bullets**: `- `, `* `, `+ ` or `• ` at the start of a line.
 - **Brackets**: `()`, `[]` and `{}` pair up within a line, in the body, in comments and in headings, for rainbow brackets and bracket matching. A bracket with no partner on its line stays plain text.
+- **URLs**: `https://…` and any other `scheme://…`, in the body and in comments, colored as links. These are the links Zed opens when you hold `cmd` (or `alt` if `multi_cursor_modifier` is `cmd_or_ctrl`) and click; a bare `www.…` isn't one. A URL ends at a space, a bracket, a quote or `*`, so trailing punctuation and the brackets around it stay outside it, though a balanced `(…)` inside it, as in Wikipedia links, stays in.
 - **Numbers**, R-style **operators** (`<-`, `%in%`, `&&`, …), and `<!-- … -->` comments.
 
 ## Navigation
@@ -73,6 +74,7 @@ The Nacho2 theme reproduces the VS Code extension's colors under the VS Code Nac
 | Highlight inside a comment | `number.highlight` |
 | Emphasis and code elsewhere | `variable.parameter.highlight` |
 | Bullet | `punctuation.list_marker` |
+| URL | `link_uri` |
 
 For example, to make bullets orange:
 

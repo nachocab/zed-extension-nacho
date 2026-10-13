@@ -31,6 +31,9 @@
 (code
   (highlight_content) @variable.parameter.highlight)
 
+; URLs, in the body and in comments, are what Zed opens on a modifier-click.
+(url) @link_uri
+
 (string) @string
 (escape_sequence) @string.escape
 

@@ -38,6 +38,10 @@
         {
           "type": "group",
           "named": true
+        },
+        {
+          "type": "url",
+          "named": true
         }
       ]
     }
@@ -110,6 +114,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "url",
           "named": true
         }
       ]
@@ -396,6 +404,10 @@
         {
           "type": "string",
           "named": true
+        },
+        {
+          "type": "url",
+          "named": true
         }
       ]
     }
@@ -451,6 +463,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "url",
           "named": true
         }
       ]
@@ -512,6 +528,10 @@
     "named": false
   },
   {
+    "type": "/",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
@@ -549,6 +569,10 @@
   },
   {
     "type": "operator",
+    "named": true
+  },
+  {
+    "type": "url",
     "named": true
   },
   {

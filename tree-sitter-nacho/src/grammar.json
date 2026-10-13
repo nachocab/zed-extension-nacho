@@ -1021,6 +1021,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "url"
+        },
+        {
+          "type": "SYMBOL",
           "name": "group"
         },
         {
@@ -1075,6 +1079,10 @@
                 "name": "comment_highlight"
               },
               {
+                "type": "SYMBOL",
+                "name": "url"
+              },
+              {
                 "type": "ALIAS",
                 "content": {
                   "type": "SYMBOL",
@@ -1115,6 +1123,10 @@
                   {
                     "type": "SYMBOL",
                     "name": "comment_highlight"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "url"
                   },
                   {
                     "type": "ALIAS",
@@ -1160,6 +1172,10 @@
                     "name": "comment_highlight"
                   },
                   {
+                    "type": "SYMBOL",
+                    "name": "url"
+                  },
+                  {
                     "type": "ALIAS",
                     "content": {
                       "type": "SYMBOL",
@@ -1201,6 +1217,10 @@
                   {
                     "type": "SYMBOL",
                     "name": "comment_highlight"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "url"
                   },
                   {
                     "type": "ALIAS",
@@ -1312,7 +1332,11 @@
       "members": [
         {
           "type": "PATTERN",
-          "value": "[^*`\"()\\[\\]{}\\n]+"
+          "value": "[^*`\"()\\[\\]{}\\s\\/]+"
+        },
+        {
+          "type": "STRING",
+          "value": "/"
         },
         {
           "type": "STRING",
@@ -1658,13 +1682,20 @@
         "members": [
           {
             "type": "PATTERN",
-            "value": "[\\p{L}_][\\p{L}\\p{N}_]*(\\.[\\p{L}\\p{N}_]+)*([ \\t,;:?¿¡'’.@~$»”…\\\\]+[\\p{L}_][\\p{L}\\p{N}_]*(\\.[\\p{L}\\p{N}_]+)*)*"
+            "value": "[\\p{L}_][\\p{L}\\p{N}_]*(\\.[\\p{L}\\p{N}_]+)*([,;:?¿¡'’.@~$»”…\\\\]+[\\p{L}_][\\p{L}\\p{N}_]*(\\.[\\p{L}\\p{N}_]+)*)*"
           },
           {
             "type": "PATTERN",
             "value": "[0-9][\\p{L}\\p{N}_]*"
           }
         ]
+      }
+    },
+    "url": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[a-zA-Z][a-zA-Z0-9+.-]*:\\/\\/([^\\s()\\[\\]{}<>\"“”«»*\\x60]|\\([^\\s()\\[\\]{}<>\"“”«»*\\x60]*\\))*([^\\s()\\[\\]{}<>\"“”«»*\\x60.,;:!?'’]|\\([^\\s()\\[\\]{}<>\"“”«»*\\x60]*\\))"
       }
     },
     "_other": {

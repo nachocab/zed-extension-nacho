@@ -257,3 +257,30 @@ Brackets pair inside comments and headings
       content: (heading_content
         (group
           (group))))))
+
+==================
+URLs in the body and in comments
+==================
+
+see https://zed.dev/docs, (https://w.org/F_(b)) "https://in.string" *https://emph.com*
+ftp://f.org www.no.scheme # at https://x.com/a. and *hl* https://y.com
+https:// alone
+
+---
+
+(source_file
+  (url)
+  (group
+    (url))
+  (string)
+  (emphasis
+    (highlight_content))
+  (url)
+  (comment
+    (comment_marker)
+    (url)
+    (comment_highlight
+      (highlight_content))
+    (url))
+  (comment
+    (comment_marker)))

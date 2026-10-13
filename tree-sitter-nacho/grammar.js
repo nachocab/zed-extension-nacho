@@ -13,14 +13,21 @@ const LEVELS = [2, 3, 4, 5, 6, 7, 8];
 const sections = ($, level) =>
   LEVELS.filter((n) => n > level).map((n) => alias($[`_section_${n}`], $.section));
 
-// Characters that may sit between the words of a single `text` token. Grouping
-// a run of prose into one token keeps the tree small; digits, operators and the
-// openers of every highlighted construct are left out so they start a token of
-// their own.
-const TEXT_SEPARATOR = String.raw`[ \t,;:?¿¡'’.@~$»”…\\]`;
+// Characters that may sit between the words of a single `text` token. Digits,
+// operators and the openers of every highlighted construct are left out so they
+// start a token of their own. So is whitespace: a run of prose spanning a space
+// would swallow the scheme of a URL after it.
+const TEXT_SEPARATOR = String.raw`[,;:?¿¡'’.@~$»”…\\]`;
 // A word keeps any `.`-joined parts glued to it, so the `.5` in `x.5` or
 // `v1.2` reads as part of the word rather than as a number.
 const WORD = String.raw`[\p{L}_][\p{L}\p{N}_]*(\.[\p{L}\p{N}_]+)*`;
+// A URL stops at whitespace and at the openers and closers the scanner pairs
+// up, so a bracket, string or highlight around it still finds its partner. The
+// exception is a balanced `(…)`, as in Wikipedia links, which the scanner pairs
+// the same way. Trailing punctuation belongs to the sentence.
+const URL_CHAR = String.raw`[^\s()\[\]{}<>"“”«»*\x60]`;
+const URL_END = String.raw`[^\s()\[\]{}<>"“”«»*\x60.,;:!?'’]`;
+const URL_PARENS = String.raw`\(${URL_CHAR}*\)`;
 
 // A bracket pair holding `content`, one choice per bracket type. The scanner
 // only opens one whose partner is on the same line.
@@ -102,6 +109,7 @@ module.exports = grammar({
     _inline: ($) =>
       choice(
         $.html_comment,
+        $.url,
         $.group,
         $.emphasis,
         $.code,
@@ -116,18 +124,25 @@ module.exports = grammar({
     comment: ($) =>
       seq(
         alias(/(#|\/\/|--) /, $.comment_marker),
-        repeat(choice($.comment_highlight, alias($._comment_group, $.group), $._comment_text)),
+        repeat(
+          choice($.comment_highlight, $.url, alias($._comment_group, $.group), $._comment_text),
+        ),
       ),
     _comment_group: ($) =>
-      brackets($, choice($.comment_highlight, alias($._comment_group, $.group), $._comment_text)),
+      brackets(
+        $,
+        choice($.comment_highlight, $.url, alias($._comment_group, $.group), $._comment_text),
+      ),
     comment_highlight: ($) =>
       choice(
         seq(alias($._emphasis_open, "*"), $.highlight_content, "*"),
         seq(alias($._code_open, "`"), alias($._code_content, $.highlight_content), "`"),
         seq(alias($._quote_open, '"'), alias($._quote_content, $.highlight_content), '"'),
       ),
-    // A delimiter with no partner on the line is plain comment text.
-    _comment_text: ($) => choice(/[^*`"()\[\]{}\n]+/, "*", "`", '"', $._stray_bracket),
+    // A delimiter with no partner on the line is plain comment text. Text runs
+    // word by word and stops at `/`, so a URL can start after any space and
+    // always outlasts the word that starts with its scheme.
+    _comment_text: ($) => choice(/[^*`"()\[\]{}\s\/]+/, "/", "*", "`", '"', $._stray_bracket),
 
     group: ($) => brackets($, $._inline),
     // A bracket with no partner on the line. Inside a pair, the pair's own
@@ -194,6 +209,15 @@ module.exports = grammar({
         choice(
           new RegExp(`${WORD}(${TEXT_SEPARATOR}+${WORD})*`),
           /[0-9][\p{L}\p{N}_]*/,
+        ),
+      ),
+
+    // What Zed opens on a modifier-click: a scheme, `://` and the rest of the
+    // word.
+    url: (_) =>
+      token(
+        new RegExp(
+          String.raw`[a-zA-Z][a-zA-Z0-9+.-]*://(${URL_CHAR}|${URL_PARENS})*(${URL_END}|${URL_PARENS})`,
         ),
       ),
 
