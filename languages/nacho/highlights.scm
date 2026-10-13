@@ -31,8 +31,12 @@
 (code
   (highlight_content) @variable.parameter.highlight)
 
-; URLs, in the body and in comments, are what Zed opens on a modifier-click.
-(url) @link_uri
+; URLs, which Zed opens on a modifier-click, keep the color of the text around
+; them: built-in themes have no `url` key, so a body URL stays plain and one in
+; a comment takes `comment`. A theme can still style `url` and `comment.url`,
+; which Nacho2 sets in italics.
+(url) @url
+(comment_url) @comment.url
 
 (string) @string
 (escape_sequence) @string.escape

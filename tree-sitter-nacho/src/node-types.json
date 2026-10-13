@@ -36,11 +36,11 @@
           "named": true
         },
         {
-          "type": "group",
+          "type": "comment_url",
           "named": true
         },
         {
-          "type": "url",
+          "type": "group",
           "named": true
         }
       ]
@@ -90,6 +90,10 @@
         },
         {
           "type": "comment_highlight",
+          "named": true
+        },
+        {
+          "type": "comment_url",
           "named": true
         },
         {
@@ -545,6 +549,10 @@
   },
   {
     "type": "comment_marker",
+    "named": true
+  },
+  {
+    "type": "comment_url",
     "named": true
   },
   {

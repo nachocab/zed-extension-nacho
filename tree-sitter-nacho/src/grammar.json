@@ -1072,31 +1072,40 @@
         {
           "type": "REPEAT",
           "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "comment_highlight"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "url"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_comment_group"
-                },
-                "named": true,
-                "value": "group"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_comment_text"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_comment_inline"
           }
+        }
+      ]
+    },
+    "_comment_inline": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "comment_highlight"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "url"
+          },
+          "named": true,
+          "value": "comment_url"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_comment_group"
+          },
+          "named": true,
+          "value": "group"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_comment_text"
         }
       ]
     },
@@ -1118,30 +1127,8 @@
             {
               "type": "REPEAT",
               "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "comment_highlight"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "url"
-                  },
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_comment_group"
-                    },
-                    "named": true,
-                    "value": "group"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_comment_text"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "_comment_inline"
               }
             },
             {
@@ -1165,30 +1152,8 @@
             {
               "type": "REPEAT",
               "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "comment_highlight"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "url"
-                  },
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_comment_group"
-                    },
-                    "named": true,
-                    "value": "group"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_comment_text"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "_comment_inline"
               }
             },
             {
@@ -1212,30 +1177,8 @@
             {
               "type": "REPEAT",
               "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "comment_highlight"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "url"
-                  },
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_comment_group"
-                    },
-                    "named": true,
-                    "value": "group"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_comment_text"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "_comment_inline"
               }
             },
             {

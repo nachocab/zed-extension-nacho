@@ -124,15 +124,17 @@ module.exports = grammar({
     comment: ($) =>
       seq(
         alias(/(#|\/\/|--) /, $.comment_marker),
-        repeat(
-          choice($.comment_highlight, $.url, alias($._comment_group, $.group), $._comment_text),
-        ),
+        repeat($._comment_inline),
       ),
-    _comment_group: ($) =>
-      brackets(
-        $,
-        choice($.comment_highlight, $.url, alias($._comment_group, $.group), $._comment_text),
+    _comment_inline: ($) =>
+      choice(
+        $.comment_highlight,
+        // Its own node type, so a theme can style it apart from a URL in the body.
+        alias($.url, $.comment_url),
+        alias($._comment_group, $.group),
+        $._comment_text,
       ),
+    _comment_group: ($) => brackets($, $._comment_inline),
     comment_highlight: ($) =>
       choice(
         seq(alias($._emphasis_open, "*"), $.highlight_content, "*"),

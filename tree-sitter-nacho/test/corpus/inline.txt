@@ -278,9 +278,9 @@ https:// alone
   (url)
   (comment
     (comment_marker)
-    (url)
+    (comment_url)
     (comment_highlight
       (highlight_content))
-    (url))
+    (comment_url))
   (comment
     (comment_marker)))
