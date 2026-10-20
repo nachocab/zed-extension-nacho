@@ -19,6 +19,31 @@ Nacho is a lightweight variation of Markdown designed for note-taking. This exte
 - **Outline**: `cmd-shift-o` lists every heading by its text, nested by level. The outline panel and breadcrumbs show the same tree.
 - **Sticky scroll**: with `"sticky_scroll": { "enabled": true }`, the headings above the viewport stay pinned at the top.
 - **Folding**: any line with an indented block under it folds, the same way it does in VS Code.
+- **Up a level**: this binding moves the cursor to the heading of the section it's in, and from a heading to its parent, one level per press. From a top-level heading it goes to the top of the file. Extensions can't add keybindings, so it goes in `keymap.json`:
+
+  ```json
+  {
+    "context": "Editor && extension == txt",
+    "bindings": {
+      "ctrl-cmd-up": [
+        "action::Sequence",
+        [
+          [
+            "editor::MoveToBeginningOfLine",
+            { "stop_at_soft_wraps": false, "stop_at_indent": false }
+          ],
+          [
+            "editor::MoveToBeginningOfLine",
+            { "stop_at_soft_wraps": false, "stop_at_indent": true }
+          ],
+          "editor::MoveToStartOfLargerSyntaxNode"
+        ]
+      ]
+    }
+  }
+  ```
+
+  It works because prose isn't a syntax node and a section starts at its heading's `#`, so from the start of a line the next larger node is the section.
 
 ## Installing
 
