@@ -28,6 +28,7 @@ Nacho is a lightweight variation of Markdown designed for note-taking. This exte
       "ctrl-cmd-up": [
         "action::Sequence",
         [
+          "editor::SaveLocation",
           [
             "editor::MoveToBeginningOfLine",
             { "stop_at_soft_wraps": false, "stop_at_indent": false }
@@ -43,7 +44,7 @@ Nacho is a lightweight variation of Markdown designed for note-taking. This exte
   }
   ```
 
-  It works because prose isn't a syntax node and a section starts at its heading's `#`, so from the start of a line the next larger node is the section.
+  It works because prose isn't a syntax node and a section starts at its heading's `#`, so from the start of a line the next larger node is the section. `editor::SaveLocation` records each starting point, so `ctrl--` (`pane::GoBack`) retraces the chain; Zed's own history only records jumps of 10 or more rows.
 
 ## Installing
 
