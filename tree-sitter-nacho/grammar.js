@@ -91,12 +91,14 @@ module.exports = grammar({
     _heading_group: ($) => brackets($, choice(alias($._heading_group, $.group), $._heading_text)),
     _heading_text: ($) => choice(/[^\s()\[\]{}]([^\n()\[\]{}]*[^\s()\[\]{}])?/, $._stray_bracket),
 
-    _block: ($) => choice($._line, $.blockquote, $._blank_line),
+    _block: ($) => choice($._line, seq($.blockquote, $._eol), $._blank_line),
 
     _blank_line: (_) => /\r?\n/,
 
-    // Lines starting with `>` take the whole line, with nothing highlighted inside.
-    blockquote: ($) => seq(token(prec(1, />[^\n]*/)), $._eol),
+    // Lines starting with `>` take the whole line, with nothing highlighted
+    // inside. The newline stays outside, as it does for a heading, so the node
+    // ends where its text does.
+    blockquote: (_) => token(prec(1, />[^\n]*/)),
 
     _line: ($) =>
       choice(seq($.list_marker, optional($._line_body), $._eol), seq($._line_body, $._eol)),

@@ -899,8 +899,17 @@
           "name": "_line"
         },
         {
-          "type": "SYMBOL",
-          "name": "blockquote"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "blockquote"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_eol"
+            }
+          ]
         },
         {
           "type": "SYMBOL",
@@ -913,24 +922,15 @@
       "value": "\\r?\\n"
     },
     "blockquote": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 1,
-            "content": {
-              "type": "PATTERN",
-              "value": ">[^\\n]*"
-            }
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_eol"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": ">[^\\n]*"
         }
-      ]
+      }
     },
     "_line": {
       "type": "CHOICE",

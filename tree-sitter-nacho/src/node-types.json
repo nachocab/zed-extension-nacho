@@ -1,10 +1,5 @@
 [
   {
-    "type": "blockquote",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "code",
     "named": true,
     "fields": {},
@@ -546,6 +541,10 @@
   {
     "type": "`",
     "named": false
+  },
+  {
+    "type": "blockquote",
+    "named": true
   },
   {
     "type": "comment_marker",
