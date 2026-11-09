@@ -34,9 +34,18 @@
 ; URLs, which Zed opens on a modifier-click, keep the color of the text around
 ; them: built-in themes have no `url` key, so a body URL stays plain and one in
 ; a comment takes `comment`. A theme can still style `url` and `comment.url`,
-; which Nacho2 sets in italics.
+; which Nacho2 shows in gray italics.
 (url) @url
 (comment_url) @comment.url
+
+; A link's label and destination take the theme's `link_text` and `link_uri`,
+; which built-in themes color. In a comment both start with `comment`, so a
+; theme without `comment.link_text` or `comment.link_uri` keeps them
+; comment-colored.
+(link_text) @link_text
+(link_uri) @link_uri
+(comment_link_text) @comment.link_text
+(comment_link_uri) @comment.link_uri
 
 (string) @string
 (escape_sequence) @string.escape

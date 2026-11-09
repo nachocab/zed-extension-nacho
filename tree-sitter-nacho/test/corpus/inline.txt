@@ -19,9 +19,6 @@ text -- dashes
   (operator)
   (operator)
   (operator)
-  (operator)
-  (operator)
-  (operator)
   (operator))
 
 ==================
@@ -142,7 +139,7 @@ Numbers need a word boundary
 Operators match their longest form
 ==================
 
-<- <<- -> ->> == != <> <= >= %/% %% %*% %in% %o% %x% && || ! well-known
+<- <<- -> ->> == != <> <= >= %/% %% %*% %in% %o% %x% && || !
 
 ---
 
@@ -164,8 +161,29 @@ Operators match their longest form
   (operator)
   (operator)
   (operator)
-  (operator)
   (operator))
+
+==================
+Hyphens join the parts of a word
+==================
+
+PLATSD-14425 COVID-19 utf-8 well-known x-1 but x - 1, a--b, word- -5 2024-01-01
+
+---
+
+(source_file
+  (operator)
+  (number)
+  (operator)
+  (operator)
+  (operator)
+  (operator)
+  (number)
+  (number)
+  (operator)
+  (number)
+  (operator)
+  (number))
 
 ==================
 Bullets start a line
@@ -284,3 +302,61 @@ https:// alone
     (comment_url))
   (comment
     (comment_marker)))
+
+==================
+Links pair a label with a destination
+==================
+
+- [PLATSD-1](https://x.net/browse/PLATSD-1-a-slug): and [w](https://w.org/F_(b))
+[*em* 2024 x-1 "s" [n]](u) [](./f.md) [a](b c)[d](e)
+[a] (b) and [a](b and [a(b)](c)
+# see [doc *hl*](./f.md) and [x] (y)
+## Head [a](b)
+
+---
+
+(source_file
+  (list_marker)
+  (link
+    (link_text)
+    (link_uri))
+  (link
+    (link_text)
+    (link_uri))
+  (link
+    (link_text
+      (emphasis
+        (highlight_content))
+      (string)
+      (group))
+    (link_uri))
+  (link
+    (link_uri))
+  (link
+    (link_text)
+    (link_uri))
+  (link
+    (link_text)
+    (link_uri))
+  (group)
+  (group)
+  (group)
+  (link
+    (link_text
+      (group))
+    (link_uri))
+  (comment
+    (comment_marker)
+    (link
+      (comment_link_text
+        (comment_highlight
+          (highlight_content)))
+      (comment_link_uri))
+    (group)
+    (group))
+  (section
+    (heading_2
+      marker: (heading_marker)
+      content: (heading_content
+        (group)
+        (group)))))

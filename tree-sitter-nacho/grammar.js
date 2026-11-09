@@ -18,9 +18,11 @@ const sections = ($, level) =>
 // start a token of their own. So is whitespace: a run of prose spanning a space
 // would swallow the scheme of a URL after it.
 const TEXT_SEPARATOR = String.raw`[,;:?¿¡'’.@~$»”…\\]`;
-// A word keeps any `.`-joined parts glued to it, so the `.5` in `x.5` or
-// `v1.2` reads as part of the word rather than as a number.
-const WORD = String.raw`[\p{L}_][\p{L}\p{N}_]*(\.[\p{L}\p{N}_]+)*`;
+// A word keeps any `.`- or `-`-joined parts glued to it, so the `.5` in `x.5`
+// or `v1.2` and the `-19` in `COVID-19` or `PLATSD-14425` read as part of the
+// word rather than as an operator and a number. That makes `x-1` text too;
+// `x - 1` keeps its operator.
+const WORD = String.raw`[\p{L}_][\p{L}\p{N}_]*([.-][\p{L}\p{N}_]+)*`;
 // A URL stops at whitespace and at the openers and closers the scanner pairs
 // up, so a bracket, string or highlight around it still finds its partner. The
 // exception is a balanced `(…)`, as in Wikipedia links, which the scanner pairs
@@ -36,6 +38,20 @@ const brackets = ($, content) =>
     seq(alias($._paren_open, "("), repeat(content), ")"),
     seq(alias($._square_open, "["), repeat(content), "]"),
     seq(alias($._brace_open, "{"), repeat(content), "}"),
+  );
+
+// A Markdown link, `[label](destination)`. The scanner only opens one when the
+// `(` follows the `]` directly and both pairs close on the line, so `[a] (b)`
+// stays two groups. Its `(` reuses the bracket token, as the pair is already
+// known to close.
+const link = ($, label, labelName, uriName) =>
+  seq(
+    alias($._link_open, "["),
+    optional(alias(label, labelName)),
+    "]",
+    alias($._paren_open, "("),
+    optional(alias($._link_uri, uriName)),
+    ")",
   );
 
 module.exports = grammar({
@@ -54,6 +70,7 @@ module.exports = grammar({
     $._paren_open,
     $._square_open,
     $._brace_open,
+    $._link_open,
     $._error_sentinel,
   ],
 
@@ -112,6 +129,7 @@ module.exports = grammar({
       choice(
         $.html_comment,
         $.url,
+        $.link,
         $.group,
         $.emphasis,
         $.code,
@@ -133,6 +151,7 @@ module.exports = grammar({
         $.comment_highlight,
         // Its own node type, so a theme can style it apart from a URL in the body.
         alias($.url, $.comment_url),
+        alias($._comment_link, $.link),
         alias($._comment_group, $.group),
         $._comment_text,
       ),
@@ -147,6 +166,37 @@ module.exports = grammar({
     // word by word and stops at `/`, so a URL can start after any space and
     // always outlasts the word that starts with its scheme.
     _comment_text: ($) => choice(/[^*`"()\[\]{}\s\/]+/, "/", "*", "`", '"', $._stray_bracket),
+
+    // The label holds the same spans the scanner skips when it pairs the
+    // brackets, so the `]` it found is the one that closes the label. Numbers,
+    // operators and URLs read as label text, which keeps the label one color.
+    link: ($) => link($, $._link_label, $.link_text, $.link_uri),
+    _link_label: ($) => repeat1($._link_label_inline),
+    _link_label_inline: ($) =>
+      choice(
+        $.html_comment,
+        alias($._link_label_group, $.group),
+        $.emphasis,
+        $.code,
+        $.string,
+        $._link_label_text,
+        $._other,
+      ),
+    _link_label_group: ($) => brackets($, $._link_label_inline),
+    _link_label_text: (_) => /[^\s()\[\]{}*`"“«<]+/,
+    // Its own node types, so a theme can style a link in a comment apart from
+    // one in the body.
+    _comment_link: ($) => link($, $._comment_link_label, $.comment_link_text, $.comment_link_uri),
+    _comment_link_label: ($) => repeat1($._comment_inline),
+    // Anything up to the `)` that closes the link, keeping balanced `(…)`, as
+    // in Wikipedia links, inside it.
+    _link_uri: ($) => repeat1($._link_uri_part),
+    _link_uri_part: ($) =>
+      choice(
+        /[^\s()]+/,
+        seq(alias($._paren_open, "("), repeat($._link_uri_part), ")"),
+        $._stray_bracket,
+      ),
 
     group: ($) => brackets($, $._inline),
     // A bracket with no partner on the line. Inside a pair, the pair's own

@@ -31,12 +31,20 @@ text *emph* and `code` 42 <- "str \n" «g»
 #                           ^ number.highlight
 <!-- html -->
 # <- comment
-  - bullet with a-hyphen
+  - bullet with x - 1
 # ^ punctuation.list_marker
-#                ^ operator
+#                 ^ operator
 see https://zed.dev/docs, (https://w.org/F_(b)) # at https://x.com.
 #   ^ url
 #                      ^ url
 #                                            ^ url
 #                                                            ^ comment.url
 #                                                                 ^ comment
+- [PLATSD-14425](https://x.net/browse/PLATSD-14425-slug) # [doc *hl*](./f.md)
+# <- punctuation.list_marker
+#  ^ link_text
+#         ^ link_text
+#                ^ link_uri
+#                                                           ^ comment.link_text
+#                                                                ^ number.highlight
+#                                                                     ^ comment.link_uri

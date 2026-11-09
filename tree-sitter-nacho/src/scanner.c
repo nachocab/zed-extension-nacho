@@ -15,6 +15,7 @@ enum TokenType {
   PAREN_OPEN,
   SQUARE_OPEN,
   BRACE_OPEN,
+  LINK_OPEN,
   ERROR_SENTINEL,
 };
 
@@ -31,8 +32,9 @@ typedef enum { BODY, COMMENT, HEADING } Context;
 
 enum Bracket { PAREN, SQUARE, BRACE, BRACKET_COUNT };
 
-// Scratch space for matching brackets. `chars` holds the rest of the line, and
-// each `next_*` array the index of the first delimiter at or after a position.
+// Scratch space for matching brackets. `chars` holds the rest of the line,
+// each `next_*` array the index of the first delimiter at or after a position,
+// and `partners` the index of the closer each opener pairs with, or NONE.
 typedef struct {
   int32_t chars[MAX_LOOKAHEAD];
   uint16_t length;
@@ -43,6 +45,7 @@ typedef struct {
   uint16_t next_html_close[MAX_LOOKAHEAD + 1];
   uint16_t brackets[MAX_LOOKAHEAD];
   uint16_t closers[BRACKET_COUNT][MAX_LOOKAHEAD];
+  uint16_t partners[MAX_LOOKAHEAD];
 } Scanner;
 
 static inline bool at_line_end(TSLexer *lexer) {
@@ -221,16 +224,19 @@ static uint16_t span_end(const Scanner *s, uint16_t i, Context context) {
   return 0;
 }
 
-// Whether the opener at the start of the buffer has a partner, judged the way
+// Pairs every opener on the line with its closer in `partners`, judged the way
 // the grammar will lex the line. Walking left to right, highlights, strings and
 // HTML comments are skipped whole, and in the body a comment marker ends the
 // line, collecting the brackets in between. Then, right to left, each opener
 // takes the nearest closer of its type that no pair to its right has already
 // enclosed. An opener without one stays text, transparent to the pairs around
 // it.
-static bool has_partner(Scanner *s, Context context) {
+static void pair_brackets(Scanner *s, Context context) {
   if (context != HEADING) {
     index_delimiters(s);
+  }
+  for (uint16_t i = 0; i < s->length; i++) {
+    s->partners[i] = NONE;
   }
   uint16_t bracket_count = 0;
   for (uint16_t i = 0; i < s->length;) {
@@ -258,22 +264,21 @@ static bool has_partner(Scanner *s, Context context) {
     if (!depth[opened]) {
       continue;
     }
-    if (i == 0) {
-      return true;
-    }
     uint16_t partner = s->closers[opened][--depth[opened]];
+    s->partners[i] = partner;
     for (int other = 0; other < BRACKET_COUNT; other++) {
       while (depth[other] && s->closers[other][depth[other] - 1] < partner) {
         depth[other]--;
       }
     }
   }
-  return false;
 }
 
 // Opens a bracket pair when its partner is on the same line, reading the rest
-// of the line as lookahead.
+// of the line as lookahead. A `[` whose `]` is followed directly by a `(` that
+// pairs too opens a link where one is valid.
 static bool scan_bracket_open(Scanner *s, TSLexer *lexer, Context context,
+                              const bool *valid_symbols,
                               enum TokenType symbol) {
   s->length = 0;
   while (!at_line_end(lexer) && s->length < MAX_LOOKAHEAD) {
@@ -283,7 +288,18 @@ static bool scan_bracket_open(Scanner *s, TSLexer *lexer, Context context,
       lexer->mark_end(lexer);
     }
   }
-  if (!has_partner(s, context)) {
+  pair_brackets(s, context);
+  uint16_t partner = s->partners[0];
+  if (partner == NONE) {
+    return false;
+  }
+  if (symbol == SQUARE_OPEN && valid_symbols[LINK_OPEN] &&
+      partner + 1 < s->length && s->chars[partner + 1] == '(' &&
+      s->partners[partner + 1] != NONE) {
+    lexer->result_symbol = LINK_OPEN;
+    return true;
+  }
+  if (!valid_symbols[symbol]) {
     return false;
   }
   lexer->result_symbol = symbol;
@@ -358,13 +374,16 @@ bool tree_sitter_nacho_external_scanner_scan(void *payload, TSLexer *lexer,
            scan_string_open(lexer, 0x00BB, GUILLEMET_STRING_OPEN); // »
   case '(':
     return valid_symbols[PAREN_OPEN] &&
-           scan_bracket_open(payload, lexer, context, PAREN_OPEN);
+           scan_bracket_open(payload, lexer, context, valid_symbols,
+                             PAREN_OPEN);
   case '[':
-    return valid_symbols[SQUARE_OPEN] &&
-           scan_bracket_open(payload, lexer, context, SQUARE_OPEN);
+    return (valid_symbols[SQUARE_OPEN] || valid_symbols[LINK_OPEN]) &&
+           scan_bracket_open(payload, lexer, context, valid_symbols,
+                             SQUARE_OPEN);
   case '{':
     return valid_symbols[BRACE_OPEN] &&
-           scan_bracket_open(payload, lexer, context, BRACE_OPEN);
+           scan_bracket_open(payload, lexer, context, valid_symbols,
+                             BRACE_OPEN);
   default:
     return false;
   }

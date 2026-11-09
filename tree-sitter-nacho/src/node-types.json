@@ -37,6 +37,10 @@
         {
           "type": "group",
           "named": true
+        },
+        {
+          "type": "link",
+          "named": true
         }
       ]
     }
@@ -55,6 +59,38 @@
         }
       ]
     }
+  },
+  {
+    "type": "comment_link_text",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "comment_highlight",
+          "named": true
+        },
+        {
+          "type": "comment_url",
+          "named": true
+        },
+        {
+          "type": "group",
+          "named": true
+        },
+        {
+          "type": "link",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "comment_link_uri",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "emphasis",
@@ -101,6 +137,10 @@
         },
         {
           "type": "html_comment",
+          "named": true
+        },
+        {
+          "type": "link",
           "named": true
         },
         {
@@ -325,6 +365,69 @@
     "fields": {}
   },
   {
+    "type": "link",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "comment_link_text",
+          "named": true
+        },
+        {
+          "type": "comment_link_uri",
+          "named": true
+        },
+        {
+          "type": "link_text",
+          "named": true
+        },
+        {
+          "type": "link_uri",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "link_text",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "code",
+          "named": true
+        },
+        {
+          "type": "emphasis",
+          "named": true
+        },
+        {
+          "type": "group",
+          "named": true
+        },
+        {
+          "type": "html_comment",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "link_uri",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "section",
     "named": true,
     "fields": {},
@@ -385,6 +488,10 @@
           "named": true
         },
         {
+          "type": "link",
+          "named": true
+        },
+        {
           "type": "list_marker",
           "named": true
         },
@@ -442,6 +549,10 @@
         },
         {
           "type": "html_comment",
+          "named": true
+        },
+        {
+          "type": "link",
           "named": true
         },
         {
