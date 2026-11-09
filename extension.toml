@@ -11,5 +11,5 @@ repository = "https://github.com/nachocab/zed-extension-nacho"
 # needs bumping whenever `tree-sitter-nacho/` changes.
 [grammars.nacho]
 repository = "https://github.com/nachocab/zed-extension-nacho"
-rev = "434cd1a860d23348b51469654e38eaf669976170"
+rev = "4443ebf2e21a51327fae2f9dee747a29f6b10803"
 path = "tree-sitter-nacho"
