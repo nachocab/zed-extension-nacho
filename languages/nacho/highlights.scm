@@ -34,7 +34,7 @@
 ; URLs, which Zed opens on a modifier-click, keep the color of the text around
 ; them: built-in themes have no `url` key, so a body URL stays plain and one in
 ; a comment takes `comment`. A theme can still style `url` and `comment.url`,
-; which Nacho2 shows in gray italics.
+; which Nacho2 shows in gray.
 (url) @url
 (comment_url) @comment.url
 
